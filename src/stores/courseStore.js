@@ -1,4 +1,6 @@
 import { EventEmitter } from "events";
+import Dispatcher from "../appDispatcher";
+
 const CHANGE_EVENT = "change";
 // Needs to emit events for each change
 class CourseStore extends EventEmitter {
@@ -20,3 +22,15 @@ class CourseStore extends EventEmitter {
 
 // create instance of the Store class
 const store = new CourseStore();
+
+// regiter Store with the Dispatcher so that Store
+// is notified when actions occur
+//  The arrow function is called anytime an action is dispatched
+// This makes Flux a different pattern that traditional pub-sub
+// Every store that is registered with the dispatcher is notified of
+// EVERY SINGLE ACTION
+Dispatcher.register(action => {
+  switch (action.actionType) {
+  }
+});
+export default store;
