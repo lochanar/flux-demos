@@ -1,8 +1,11 @@
 import { EventEmitter } from "events";
 import Dispatcher from "../appDispatcher";
+import actionTypes from "../actions/actionTypes";
 
 const CHANGE_EVENT = "change";
-// Needs to emit events for each change
+let _courses = [];
+
+// Needs to emit events for each change, hence extend EventEmitter
 class CourseStore extends EventEmitter {
   // Will allow React components to subscribe to
   // our store so that they're notified when changes occur
@@ -18,6 +21,14 @@ class CourseStore extends EventEmitter {
   emitChange() {
     this.emit(CHANGE_EVENT);
   }
+
+  getCourses() {
+    return _courses;
+  }
+
+  getCourseBySlug(slug) {
+    return _courses.find(course => course.slug === slug);
+  }
 }
 
 // create instance of the Store class
@@ -31,6 +42,11 @@ const store = new CourseStore();
 // EVERY SINGLE ACTION
 Dispatcher.register(action => {
   switch (action.actionType) {
+    case actionTypes.CREATE_COURSE:
+      _courses.push(action.course);
+      store.emitChange();
+      break;
+    default:
   }
 });
 export default store;
