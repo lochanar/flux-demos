@@ -1,6 +1,6 @@
 import dispatcher from "../appDispatcher";
 import * as courseApi from "../api/courseApi";
-import actionTypes from "actionTypes";
+import actionTypes from "../actions/actionTypes";
 
 // This entire function is called an action creator
 // An action creator is a handy helper that wraps our actions.
