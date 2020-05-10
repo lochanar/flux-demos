@@ -12,7 +12,9 @@ export function saveCourse(course) {
     // The Action
     // Hey dispatcher, go tell the stores that a course was just created!
     dispatcher.dispatch({
-      actionType: actionTypes.CREATE_COURSE,
+      actionType: course.id
+        ? actionTypes.UPDATE_COURSE
+        : actionTypes.CREATE_COURSE,
       course: savedCourse
     });
   });
