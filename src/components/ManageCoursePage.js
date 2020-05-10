@@ -6,6 +6,7 @@ import * as courseActions from "../actions/courseActions";
 
 const ManageCoursePage = props => {
   const [errors, setErrors] = useState({});
+  const [courses, setCourses] = useState(courseStore.getCourses());
   const [course, setCourse] = useState({
     id: null,
     slug: "",
@@ -15,17 +16,28 @@ const ManageCoursePage = props => {
   });
 
   useEffect(() => {
+    // Adding event listener to subscribe to store changes on mount
+    courseStore.addChangeListener(onChange);
     const slug = props.match.params.slug; // from the path `/courses/:slug`
-    if (slug) {
+    // If courses are empty, let course store know to fetch them
+    if (courses.length === 0) {
+      courseActions.loadCourses();
+    } else if (slug) {
       setCourse(courseStore.getCourseBySlug(slug));
     }
-  }, [props.match.params.slug]);
+    // Remove event listener on component unmount
+    return () => courseStore.removeChangeListener(onChange);
+  }, [props.match.params.slug, courses.length]);
 
   function handleChange({ target }) {
     setCourse({
       ...course,
       [target.name]: target.value
     });
+  }
+
+  function onChange() {
+    setCourses(courseStore.getCourses());
   }
 
   function formIsValid() {
